@@ -1,38 +1,24 @@
 class Graph():
     def __init__(self, size):
         self.size = size
-        self.edges = [[] for _ in range(size)]
-        self.inDeg = [0 for _ in range(size)]
-        self.outDeg = [0 for _ in range(size)]
+        self.edges = [[None for _ in range(size+1)] for _ in range(size+1)]
     
-    def addEdge(self, origin, destiny):
-        if(not(destiny in self.edges[origin])):
-            self.edges[origin].append(destiny)
-            self.inDeg[destiny] += 1
-            self.outDeg[origin] += 1
+    def addEdge(self, v1, v2, weigth):
+        if(v1 < v2 and v1 != v2):
+            self.edges[v1][v2] = weigth
+        elif(v2 < v1 and v1 != v2):
+            self.edges[v2][v1] = weigth
     
-    def addVertex(self):
-        self.edges.append([])
-        self.inDeg.append(0)
-        self.outDeg.append(0)
-    
-    def removeEdge(self, origin, destiny):
-        if((destiny in self.edges[origin])):
-            self.edges[origin].remove(destiny)
-            self.inDeg[destiny] -= 1
-            self.outDeg[origin] -= 1
+    def removeEdge(self, v1, v2):
+        if(v1 < v2 and v1 != v2):
+            self.edges[v1][v2] = None
+        elif(v2 < v1 and v1 != v2):
+            self.edges[v2][v1] = None
 
-    def removeVertex(self, vertex):
-        for neighbour in self.edges[vertex]:
-            self.inDeg[neighbour] -= 1
-        self.edges[vertex] = None
-        self.inDeg[vertex] = None
-        self.outDeg[vertex] = None
-        for i in range(len(self.edges)):
-            if (self.edges[i] != None and vertex in self.edges[i]):
-                self.edges[i].remove(vertex)
-                self.outDeg[i] -= 1
-
-    def hasEdge(self, origin, destiny):
-        if((destiny in self.edges[origin])): return True
-        return False
+    def getAllEdges(self):
+        list = []
+        for i in range(1,self.size+1):
+            for j in range(1, self.size+1):
+                if(self.edges[i][j] != None):
+                    list.append([i, j, self.edges[i][j]])
+        return list
