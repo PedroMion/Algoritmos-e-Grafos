@@ -1,7 +1,7 @@
 from Graph import Graph
 from UnionFind import UnionByRank
 
-def Kruskal(graph):
+def kruskal(graph):
     mst = Graph(graph.size)
     uf = UnionByRank(graph.size)
     edgesInOrder = sorted(graph.getAllEdges(), key=lambda x: x[2])
